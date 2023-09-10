@@ -102,6 +102,29 @@ class Repository:
 
         return instance
 
+    async def filter(self, *whereclause: BinaryExpression, limit: int = None, offset: int = None):
+        """Запрос с фильтрами."""
+
+        stmt = select(self.model).where(*whereclause)
+
+        if limit is not None:
+            stmt = stmt.limit(limit)
+
+        if offset is not None:
+            stmt = stmt.offset(offset)
+
+        result = self._session.scalars(stmt)
+
+        return result.all()
+
+    def all(self):
+        """Возвращает все записи."""
+
+        stmt = select(self.model)
+        result = self._session.scalars(stmt)
+
+        return result.all()
+
     def delete(self, instance: object, commit: bool = False):
         """Удаляет объект.
 
