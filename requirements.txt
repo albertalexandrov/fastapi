@@ -1,3 +1,4 @@
-fastapi==0.103.1
+fastapi==0.99.0
 sqlalchemy==2.0.20
 uvicorn==0.23.2
+fastapi-filter==0.6.1

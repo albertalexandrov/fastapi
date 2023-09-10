@@ -12,7 +12,7 @@ router = APIRouter()
 def create_country(
     create_data: CreateCountry, use_case: CreateObjectUseCase = Depends(create_object_use_case(CountriesRepository))
 ):
-    return use_case.create(create_data=create_data.model_dump())
+    return use_case.create(create_data=create_data.dict())
 
 
 @router.get("/countries/{country_id}", response_model=Country)
@@ -26,7 +26,7 @@ def update_country(
     update_data: UpdateCountry,
     use_case: UpdateObjectUseCase = Depends(update_object_use_case(CountriesRepository))
 ):
-    return use_case.update_object_or_404(pk_value=country_id, update_data=update_data.model_dump(exclude_unset=True))
+    return use_case.update_object_or_404(pk_value=country_id, update_data=update_data.dict(exclude_unset=True))
 
 
 @router.delete("/countries/{country_id}")
