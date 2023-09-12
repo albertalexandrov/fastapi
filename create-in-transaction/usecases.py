@@ -2,6 +2,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from dependencies import get_session
+from models import Country, City
 from repositories import CityRepository, CountriesRepository
 
 
@@ -40,3 +41,31 @@ class CreateCountryUseCase:
     def refresh(self, instance: object):
         self._session.refresh(instance)
         return instance
+
+
+# Todo:
+#   А может сделать без репозиториев?  Нужен какой-то более менее объемный кейс, чтобы оценить
+# class CreateCountryUseCase:
+#     """Пользовательский кейс создания городов и стран.
+#
+#     Более сложный кейс, тк создаются экземпляры двух моделей - соответственно нужна транзакция
+#     Для транзакции нужна одна-единственная сессия, которая будет передана в репозитории
+#
+#     """
+#
+#     def __init__(self, session: Session = Depends(get_session)):
+#         self._session = session
+#
+#     def create_country(self, create_data: dict):
+#         cities = create_data.pop("cities")
+#         country = Country(**create_data)
+#         self._session.add(country)
+#
+#         for city in cities:
+#             city = City(name=city)
+#             country.cities.append(city)
+#
+#         self._session.commit()
+#         self._session.refresh(country)
+#
+#         return country
